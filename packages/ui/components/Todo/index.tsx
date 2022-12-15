@@ -7,6 +7,13 @@ interface TodoProps extends CheckmarkProps {
   title: string;
 }
 
+const TodoContainer = styled.label`
+  display: inline-flex;
+  align-content: center;
+  gap: 8px;
+  cursor: pointer;
+`
+
 const HiddenCheckbox = styled.input.attrs({
   type: "checkbox",
   "aria-hidden": "true",
@@ -26,14 +33,15 @@ const CheckContainer = styled.svg<CheckmarkProps>`
   width: 20px;
   background: #fff;
   border: 2px #ddd solid;
-  margin-right: 4px;
+  border-radius: 4px;
+  padding: 2px;
 
   ${({ checked }) => {
     return (
       checked &&
       `
-      background: purple;
-      border-color: purple;
+      background: #1acb61;
+      border-color: #24af5c;
     `
     );
   }}
@@ -48,21 +56,34 @@ const Checkmark = ({ checked }: CheckmarkProps) => {
       checked={checked}
     >
       <path
-        d="M1 4.5L5 9L14 1"
-        strokeWidth="2"
+        d="M2 5L6 9L12 1"
+        strokeWidth="3"
         stroke={checked ? "#fff" : "none"}
+        strokeLinecap="round"
       />
     </CheckContainer>
   );
 };
 
+const Label = styled.span<CheckmarkProps>`
+  display: flex;
+  align-items: center;
+  text-decoration: ${({ checked }) => (checked ? "line-through" : "")};
+  color: #bbb;
+  
+  &:hover{
+    color: #111;
+    text-decoration: none;
+  }
+`;
+
 const Todo = ({ title, checked }: TodoProps) => {
   return (
-    <label>
+    <TodoContainer>
       <HiddenCheckbox checked={checked} />
       <Checkmark checked={checked} />
-      {title}
-    </label>
+      <Label checked={checked}>{title}</Label>
+    </TodoContainer>
   );
 };
 export default Todo;
